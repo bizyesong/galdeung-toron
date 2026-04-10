@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "맛집 검색에 카카오 REST API 키가 필요합니다. 프로젝트 루트( package.json 있는 폴더 )의 .env.local 에 KAKAO_CLIENT_ID=키 를 넣고 개발 서버를 완전히 끈 뒤 다시 실행하세요. .env.example 만 수정한 경우에는 적용되지 않습니다.",
+            "맛집 검색에 카카오 REST API 키가 필요합니다. 로컬: package.json 있는 폴더의 .env.local에 KAKAO_CLIENT_ID=키 를 넣고 개발 서버를 재시작하세요. Vercel 등 배포: 프로젝트 → Settings → Environment Variables에 KAKAO_CLIENT_ID(또는 KAKAO_REST_API_KEY)를 추가한 뒤 Redeploy 하세요. .env.example만 수정한 경우에는 적용되지 않습니다.",
         },
         { status: 503 },
       );

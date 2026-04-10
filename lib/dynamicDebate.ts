@@ -308,7 +308,7 @@ function packFoodFromKakaoPlaces(
         color: "rose",
       },
     ],
-    deep1: `${condOpen}말할게요. 이번 검색 목록에서 ${p0.placeName}을 먼저 거론하는 건, 카카오에 찍힌 위치가 ${p0.address || "목록에 나온 주소 그대로"}로 분명하고 업종이 ${catHint(p0)}라서 **같은 후보들 안에서 비교·검증의 출발점**으로 쓰기 좋다는 뜻이에요. ‘주소만 보고 무조건 여기’가 아니라, 여기서부터 맵 후기랑 오늘 영업을 대조해 보자는 거죠.${condClose}${scBlock}`,
+    deep1: `${condOpen}저는 일단 ${p0.placeName}부터 짚을게요. 카카오에 ${p0.address || "주소"}·${catHint(p0)}로 떠 있어서, 오늘 검색에 같이 뜬 집들이랑 붙여 볼 때 여기서부터 까는 게 편하거든요. 주소만 보고 “무조건 여기”는 아니에요.${condClose}${scBlock}`,
     rebuttal2: `${rebLead}잠깐, 저는 이번 검색 결과의 ${p1.placeName}이 ${p0.placeName}이랑은 다른 장면을 연다고 봐요. ${p1.address ? `위치는 ${p1.address} 쪽이고 ` : ""}${catHint(p1)}라서 동선·분위기·메뉴 구성이 첫 후보랑 겹치지 않거든요. 목록이 여러 개면 각자 장단이 있으니까 ${p0.placeName}만 고집하긴 아깝죠.`,
     critique3: `두 분 잠깐—저는 카카오맵 후기 기준으로 보면 이번 검색의 ${p2.placeName} 쪽을 같이 놓고 봐야 한다고 봐요. place_url 들어가서 별점이랑 리뷰 키워드, 최근 방문 후기 톤만 훑어도 ${p0.placeName}·${p1.placeName}이랑은 다른 그림이거든요. 숫자는 맵에서 직접 확인하고, 세 군데 다 후기 탭이랑 사진 탭은 꼭 본 다음에 골라요.\n\n이번에 검색에 뜬 곳: ${places.map((p) => p.placeName).join(", ")}`,
     free1: `저는 여전히 이번 목록의 ${p0.placeName} 쪽이에요. 검색에 뜬 정보만으로도 동선이 잡히거든요.`,

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>난장 NANJANG — 바이브코딩 스터디 발표 (업데이트 · 8슬라이드)</title>
+  <title>난장 NANJANG — PM의 바이브코딩 스터디 발표 (8슬라이드)</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -165,20 +165,21 @@
   <section class="slide">
     <div class="slide-grid">
       <div class="col-text">
-        <span class="badge">바이브코딩 스터디 · 서비스 기획자</span>
+        <span class="badge">스터디 발표 · PM 관점 · 바이브코딩 입문</span>
         <h1>난장 (NANJANG)</h1>
         <p class="sub">
-          AI 세 명이 의견을 나누고, 투표형 결론과 후속 질문까지 주는 <strong>의사결정 놀이터</strong>.
-          Cursor·AI와 함께 코드로 프로토타입을 굴리며, 기획 의도를 직접 검증하는 실험 프로젝트입니다.
+          저는 <strong>서비스 기획(PM)</strong> 쪽에서 일하며, 이번에 처음 <strong>바이브코딩</strong>이라는 말과 방식을 접했습니다.
+          “기획만 문서로 남기지 말고, AI와 대화하며 바로 돌아가는 걸 만들어 보자”가 목표였고,
+          그 결과물이 <strong>AI 3인 토론형 의사결정 프로토타입</strong>입니다.
         </p>
         <div style="margin-top:1rem">
-          <span class="pill">Next.js</span>
+          <span class="pill">Next.js 15</span>
+          <span class="pill">Cursor + AI</span>
           <span class="pill">OpenAI API</span>
-          <span class="pill">Kakao Local (맛집)</span>
-          <span class="pill">답변 다듬기(옵션)</span>
-          <span class="pill">프로토타입</span>
+          <span class="pill">Kakao Local</span>
+          <span class="pill">Vercel 배포</span>
         </div>
-        <p class="footer-note">※ 완성 서비스가 아닌 스터디용 빌드 · 발표 후 계속 개선 예정</p>
+        <p class="footer-note">※ 스터디용 프로토타입 · 상용 수준 아님 · 발표 후에도 개선 중</p>
       </div>
       <div class="col-wire">
         <div class="wire-caption">Prototype wireframe · 한 화면 흐름</div>
@@ -208,14 +209,14 @@
   <section class="slide">
     <div class="slide-grid">
       <div class="col-text">
-        <span class="badge">서비스 이해</span>
-        <h2>무엇을 만드는가</h2>
-        <p class="sub">사용자가 한 줄로 고민을 던지면, 성향 다른 전문가 3인이 토론하고 합의·실행 팁·짧은 후속 선택지(2차전)를 줍니다.</p>
+        <span class="badge">바이브코딩으로 일한 방식</span>
+        <h2>Cursor·AI를 PM이 어떻게 썼나</h2>
+        <p class="sub">코드를 처음부터 한 줄씩 짜기보다, <strong>의도·화면·에러 메시지</strong>를 말로 넘기고 AI가 초안을 만들게 했습니다.</p>
         <ul>
-          <li><strong>입력</strong> — 질문 한 줄 (맥북·와인·맛집 등)</li>
-          <li><strong>출력</strong> — 4턴 토론, 합의, 투표형 결론, 후속 칩 3개, <strong>북마크(저장한 답변)</strong></li>
-          <li><strong>기획 포인트</strong> — 정답 검색이 아니라 <strong>관점 충돌로 결정을 앞당김</strong></li>
-          <li><strong>역할</strong> — 기획자가 룰·톤을 잡고, 바이브코딩으로 구현 속도 확보</li>
+          <li><strong>기획 → 코드</strong> — “이런 흐름의 토론 UI”, “맛집일 때만 카카오 쓰고 싶다”처럼 요구를 문장으로 던짐</li>
+          <li><strong>반복 루프</strong> — 화면을 써 보고 → 톤이 이상하면 → <strong>프롬프트·금지어·역할</strong>을 같이 고침 (스펙만으로는 안 보이던 디테일이 여기서 드러남)</li>
+          <li><strong>막힐 때</strong> — TypeScript·ESLint·빌드 에러 로그를 붙여 넣고 수정 요청, <code>npm run build</code>까지 맡겨서 배포 가능 상태로 맞춤</li>
+          <li><strong>배포</strong> — GitHub·Vercel 연결, 환경 변수 위치(<code>.env.local</code> vs 대시보드)도 단계별로 질문하며 정리</li>
         </ul>
       </div>
       <div class="col-wire">
@@ -244,13 +245,14 @@
   <section class="slide">
     <div class="slide-grid">
       <div class="col-text">
-        <span class="badge">1차 개편 · 방향 잡기</span>
-        <h2>MVP와 초기 토론 구조</h2>
+        <span class="badge">서비스 이해</span>
+        <h2>무엇을 만들었나 · 사용자에게 주는 가치</h2>
+        <p class="sub">한 줄 고민을 던지면, 성향이 다른 <strong>전문가 3인</strong>이 토론하고, <strong>합의·투표형 결론·후속 선택지(2차전)</strong>까지 줍니다.</p>
         <ul>
-          <li><strong>골격</strong> — <code>/api/debate</code> → OpenAI 또는 로컬 JSON → UI</li>
-          <li><strong>맛집 축</strong> — 카카오 키워드 결과로 <strong>실존 업장만</strong> 토론</li>
-          <li><strong>초기 답변의 한계</strong> — 말이 <strong>박사·논문체</strong>에 가깝고, n=·TCO·효용 곡선 같은 <strong>가짜 통계</strong>가 섞이며 캐릭터가 안 살아 남</li>
-          <li><strong>배운 점</strong> — 기능보다 <strong>시스템 프롬프트·금지어·결맺음 규칙</strong>이 체감 품질을 가른다</li>
+          <li><strong>입력</strong> — 맥북 살까, 와인 마실까, <strong>○○ 맛집</strong> 같은 일상 의사결정 한 줄</li>
+          <li><strong>출력</strong> — 4턴 토론 타임라인, MC 정리, <strong>지난 토론 저장</strong>, 마음에 드는 턴·합의 <strong>북마크</strong></li>
+          <li><strong>기획 포인트</strong> — 정답 검색기가 아니라 <strong>관점을 부딪쳐 결정을 앞당기는 놀이터</strong></li>
+          <li><strong>PM 역할</strong> — 룰·톤·분기 조건을 정하고, AI는 그걸 코드·프롬프트로 옮기는 조수</li>
         </ul>
       </div>
       <div class="col-wire">
@@ -286,28 +288,19 @@
   <section class="slide">
     <div class="slide-grid">
       <div class="col-text">
-        <span class="badge">2차 개편 · 톤과 페르소나</span>
-        <h2>토론 엔진 리라이트 + 답변 톤 히스토리</h2>
-        <p class="sub">프롬프트를 여러 번 고쳐 가며, <strong>난장 답변을 논문체에서 구어체·커뮤니티 톤</strong>으로 끌어왔습니다.</p>
-        <div class="history-flow">
-          <div class="history-box bad">
-            <strong>이전</strong><br/>
-            박사·보고서 말투, 가짜 n·표본, TCO·효용 곡선, “연구에 따르면…” 식 허구 근거
-          </div>
-          <div class="history-arrow">→</div>
-          <div class="history-box good">
-            <strong>이후</strong><br/>
-            온라인 커뮤니티에서 보이는 <strong>구어체 논쟁</strong>, 실제 도는 시장 상식만, <strong>투표로 끝내는 결론</strong>
-          </div>
-        </div>
-        <ul style="margin-top:0.85rem">
-          <li><strong>전자기기</strong> — 장비병 / 짠돌이 / 중고고수 고정 역할</li>
-          <li><strong>음주</strong> — 와인·술은 “사라/마라”와 섞이지 않게 전용 분기</li>
-          <li><strong>후속</strong> — 2차전 칩으로 상황만 바꿔 재토론</li>
+        <span class="badge">구현 ① · 뼈대</span>
+        <h2>기술 구조 — 어디서 무엇이 돌아가나</h2>
+        <p class="sub">프론트는 <strong>Next.js(App Router) + React</strong>, 토론 생성은 <strong>서버 API 한 곳</strong>으로 모았습니다.</p>
+        <ul>
+          <li><strong>엔드포인트</strong> — <code>POST /api/debate</code>가 질문·후속 선택을 받고 JSON으로 토론 묶음을 돌려줌</li>
+          <li><strong>AI 호출</strong> — 기본은 <strong>OpenAI</strong>로 멀티턴 토론 생성, 실패·조건에 따라 <strong>로컬 템플릿</strong> 폴백</li>
+          <li><strong>맛집만 카카오</strong> — 질문에 <strong>「맛집」</strong>이 있을 때만 카카오 키워드 검색 → 실제 업장 목록을 컨텍스트로 넣음</li>
+          <li><strong>분기</strong> — 전자기기·음주 의사결정 등은 키워드로 감지해 <strong>전용 페르소나·톤</strong>으로 분리</li>
         </ul>
+        <p class="muted" style="margin-top:0.75rem">요청 흐름: 브라우저 → <code>/api/debate</code> → OpenAI 또는 로컬 팩 · 맛집이면 카카오 검색 결과를 끼워 넣음 → JSON을 카드 UI로 표시.</p>
       </div>
       <div class="col-wire">
-        <div class="wire-caption">Persona blocks · 3인 와이어</div>
+        <div class="wire-caption">4턴 토론 + MC (와이어)</div>
         <svg class="wire-svg" viewBox="0 0 280 260" xmlns="http://www.w3.org/2000/svg">
           <rect x="12" y="12" width="256" height="56" rx="6" fill="#18181b" stroke="#22d3ee" stroke-opacity="0.45" stroke-dasharray="4 2"/>
           <text x="22" y="36" fill="#67e8f9" font-size="11">① Opening · 한쪽 쪽으로 밀기</text>
@@ -329,14 +322,16 @@
   <section class="slide">
     <div class="slide-grid">
       <div class="col-text">
-        <span class="badge">3차 개편 · 연동과 안정화</span>
-        <h2>카카오 · 분기 · 에러 처리</h2>
+        <span class="badge">구현 ② · 연동·품질·배포</span>
+        <h2>카카오 · 톤 잡기 · Vercel</h2>
         <ul>
-          <li><strong>맛집만 카카오</strong> — 질문에 <strong>「맛집」</strong> 포함 시에만 호출 → 그 외 고민은 키 없이도 동작</li>
-          <li><strong>콘솔 설정</strong> — 카카오 개발자 앱에서 <strong>Open Map &amp; Local</strong> 켜야 함(꺼져 있으면 HTTP 403)</li>
-          <li><strong>환경 변수</strong> — <code>.env.local</code>, REST 키 정규화(BOM·따옴표)</li>
-          <li><strong>검색</strong> — 대화체 꼬리 제거(예: 어디가 좋을까), 지역 좌표 보강, <strong>0건이면 422</strong> + 시도한 검색어 안내</li>
-          <li><strong>폴백</strong> — OpenAI 실패 시 카테고리별 로컬 팩 · 맛집은 카카오 목록 기반 템플릿</li>
+          <li><strong>맛집만 카카오</strong> — 질문에 <strong>「맛집」</strong> 있을 때만 호출 → 나머지는 키 없이도 동작</li>
+          <li><strong>콘솔</strong> — 카카오 앱에서 <strong>Open Map &amp; Local</strong> 활성화(꺼지면 403)</li>
+          <li><strong>환경 변수</strong> — 로컬은 <code>.env.local</code> · 배포는 <strong>Vercel → Settings → Environment Variables</strong>(GitHub에는 안 올라감)</li>
+          <li><strong>Vercel</strong> — 저장소 연결 후 <code>main</code> push마다 빌드 · 프로덕션 URL로 데모 가능</li>
+          <li><strong>검색 안정화</strong> — 질문에서 대화 꼬리 제거, 0건이면 사용자에게 시도한 검색어와 함께 안내</li>
+          <li><strong>답변 톤</strong> — 초기엔 논문체·가짜 통계 느낌 → Cursor로 프롬프트를 여러 번 고쳐 <strong>구어체·금지 규칙·역할</strong>을 쌓으며 개선</li>
+          <li><strong>폴백</strong> — OpenAI 실패 시 로컬 템플릿 · 맛집은 카카오 목록 기반</li>
         </ul>
       </div>
       <div class="col-wire">
@@ -374,8 +369,8 @@
   <section class="slide">
     <div class="slide-grid">
       <div class="col-text">
-        <span class="badge">4차 개편 · UI &amp; 카드</span>
-        <h2>핵심 요약 · 북마크 · 톤</h2>
+        <span class="badge">구현 ③ · UI</span>
+        <h2>카드 · 북마크 · 맛집 토론 표현</h2>
         <ul>
           <li><strong>한 줄 요약</strong> — 카드용 <strong>짧은 결론형</strong>(공백 포함 약 40자, MC는 조금 더 길게), 본문 복붙 지양 · 표시 전용 클램프</li>
           <li><strong>북마크</strong> — 턴/합의 저장 · 우측 상단 고정이 아니라 <strong>프로필 행과 같은 줄</strong>로 정렬해 시선 흐름 정리</li>
@@ -400,8 +395,8 @@
   <section class="slide">
     <div class="slide-grid">
       <div class="col-text">
-        <span class="badge">5차 개편 · 2차전 &amp; 카피</span>
-        <h2>후속 조건 반영 · 로컬 문장 다듬기</h2>
+        <span class="badge">구현 ④ · 후속·옵션</span>
+        <h2>2차전(후속 칩) · 카피 폴리시(옵션)</h2>
         <ul>
           <li><strong>2차전(후속 칩)</strong> — 「아, 진작 말씀하지!」 접두 + 사용자가 고른 조건(예: 5명 이상 단체)을 <strong>본문 논점에 녹임</strong> · 로컬 폴백 템플릿도 동일</li>
           <li><strong>얕은 근거 문제</strong> — 주소·카테고리만 읽는 느낌 → 프롬프트로 <strong>비교·트레이드오프·맵 확인</strong> 유도</li>
@@ -436,9 +431,14 @@
 
   <!-- Slide 8 -->
   <section class="slide">
-    <span class="badge">로드맵 & 스터디 소감</span>
-    <h2>추후 계획 (표) · 추가 기능은 검토 중</h2>
-    <p class="sub">아래 일정·범위는 방향성이며, <strong>더 넣을 기능·우선순위는 아직 고민 중</strong>입니다.</p>
+    <span class="badge">결과물 · 로드맵 · 소감</span>
+    <h2>데모 URL · 다음에 할 일 · PM으로서 배운 점</h2>
+    <p class="sub">
+      <strong>배포 주소:</strong>
+      <code style="color:#a5b4fc">https://galdeung-toron.vercel.app</code>
+      — 스터디에서 바로 열어 데모 가능(키는 Vercel 환경 변수에 설정).
+    </p>
+    <p class="sub" style="margin-top:0.5rem">아래 표는 방향성이며, 우선순위는 계속 조정 중입니다.</p>
     <table class="roadmap-table">
       <thead>
         <tr>
@@ -471,12 +471,12 @@
       </tbody>
     </table>
     <div class="callout">
-      <strong>기획자로서</strong> — 답변 톤을 논문체에서 구어체로 바꿀 때, “한 줄 프롬프트”가 아니라 <strong>금지어·역할·결맺음</strong>을 묶어서 고쳐야 체감이 바뀐다는 걸 이번에 몸으로 배움.
+      <strong>PM으로서</strong> — 문서만으로는 안 보이던 디테일(에러 문구, 빈 검색, 배포 시 시크릿 위치)을 <strong>돌아가는 것</strong>을 만들면서 한 번에 이해됐어요.
       <br/><br/>
-      <strong>바이브코딩</strong> — 가설 → 구현 → 피드백 루프를 짧게 돌리며, 스펙만으로는 안 보이던 분기(맛집/일반/술), 카카오 권한·빈 검색, UI 정렬, 2차전 조건 누락까지 직접 다뤄 봄.
+      <strong>바이브코딩 첫 경험</strong> — Cursor에 기획 의도·스크린 설명·에러 로그를 던지고, 짧은 루프로 고쳐 가니 “기획 ↔ 구현” 거리가 확 줄었습니다. 완성 서비스라기보다 <strong>검증용 프로토타입</strong>을 스스로 굴려 본 게 큰 수확이에요.
     </div>
     <p class="footer-note">
-      PDF: 저장 시점 기준으로 레포의 <code>presentation-study.html</code>를 인쇄하거나, 빌드 스크립트로 생성 가능.
+      PDF 생성: 프로젝트 루트에서 <code>npm run slides:pdf</code> (Chrome 필요) 또는 브라우저에서 <code>presentation-study.html</code> 열고 인쇄 → PDF 저장.
     </p>
   </section>
 
