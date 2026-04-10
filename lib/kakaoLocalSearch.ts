@@ -125,6 +125,8 @@ export function formatKakaoPlacesForPrompt(places: KakaoPlaceCandidate[]): strin
 - synthesis: 양쪽 장단을 정리하고 예산·인원·시간 같은 **실무 조건**으로 절충·조건부 추천.
 출처 표시는 가끔 "검색에 뜬 ○○○" 정도면 충분하고, 매 문장마다 같은 꼴로 반복하지 마.
 
+[opening 금지] "말할게요", "이번 검색 목록에서 … 먼저 거론", "비교·검증의 출발점", "카카오에 찍힌 위치가" — 이런 식 메타·면책 설명 문장. 첫 발언은 바로 왜 1번 가게 편인지 구어체로.
+
 ${lines.join("\n\n")}`;
 }
 

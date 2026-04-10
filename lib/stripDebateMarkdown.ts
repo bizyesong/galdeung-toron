@@ -89,3 +89,33 @@ export function withKakaoPlaces(
   if (!places.length) return p;
   return sanitizeDebatePayload({ ...p, kakaoPlaces: places });
 }
+
+/** 구 로컬 템플릿·면책 강의체를 OpenAI가 복붙한 opening 본문 */
+function isMatjipMetaLectureOpeningBody(body: string): boolean {
+  const head = body.slice(0, 500);
+  if (/비교·검증의\s*출발점/.test(head)) return true;
+  if (/먼저\s*거론하는\s*건/.test(head) && /카카오에\s*찍힌/.test(head))
+    return true;
+  if (/말할게요/.test(head) && /이번\s*검색\s*목록에서/.test(head)) return true;
+  return false;
+}
+
+/**
+ * 맛집 모드에서 모델이 예전 고정 대사(메타·면책 설명)를 그대로보낸 경우 opening만 교체.
+ * (로컬 폴백 문구를 학습·재현하는 경우 대비)
+ */
+export function stripMatjipMetaLectureOpening(
+  p: DebatePayload,
+  places: KakaoPlaceCandidate[],
+): DebatePayload {
+  if (!places.length) return p;
+  const idx = p.turns.findIndex((t) => t.phase === "opening");
+  if (idx < 0) return p;
+  const turn = p.turns[idx]!;
+  if (!isMatjipMetaLectureOpeningBody(turn.body)) return p;
+  const name = places[0]?.placeName?.trim() || "첫 후보";
+  const replacement = `저는 일단 ${name}부터 짚을게요. 오늘 검색에 같이 뜬 집들끼리 비교할 때 여기서부터 까는 게 편하거든요. 주소만 보고 무조건 여기는 아니에요. 맛·자리·영업은 카카오맵 후기랑 오늘 영업만 꼭 확인하세요.`;
+  const turns = p.turns.slice();
+  turns[idx] = { ...turn, body: replacement };
+  return { ...p, turns };
+}

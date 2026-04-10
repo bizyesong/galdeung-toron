@@ -17,7 +17,11 @@ import {
   attachKakaoUrlsToFoodConsensus,
   formatKakaoPlacesForPrompt,
 } from "./kakaoLocalSearch";
-import { sanitizeDebatePayload, withKakaoPlaces } from "./stripDebateMarkdown";
+import {
+  sanitizeDebatePayload,
+  stripMatjipMetaLectureOpening,
+  withKakaoPlaces,
+} from "./stripDebateMarkdown";
 import { normalizeExpertColor } from "./expertTheme";
 import { LUCIDE_ICON_PROMPT_BLOCK } from "./lucidePromptCatalog";
 import {
@@ -834,7 +838,8 @@ ${PRAGMATIC_FOOD_FRAMEWORK}
 
 [주장 필수]
 상호는 목록과 글자 하나까지 동일하게 쓰되, 대사는 **리스트 읽기가 아니라 토론**이다. 2·3번은 1번과 다른 기준으로 **깨지는 이유**를 말한다. 가끔 "검색에 뜬 ○○○"처럼 출처를 밝히면 되고, 매 문장 패턴을 반복하지 마.
-opening에서 "먼저 거론하는 이유는 카카오에 찍힌 위치가… 비교·검증의 출발점" 같은 **메타 설명·면책 강의체** 금지. 친구한테 말하듯 왜 자기 편 가게가 나은지부터 말하고, 맵 확인은 한두 문장으로 짧게.
+opening **절대 금지**(한 글자라도 포함하면 안 됨): "말할게요"로 시작, "이번 검색 목록에서", "먼저 거론하는 건", "비교·검증의 출발점", "카카오에 찍힌 위치가".
+대신 친구 말투로 **왜 내가 든 가게가 유리한지**부터 말한다. 맵에서 확인하라는 말은 끝에 한두 문장.
 
 [대사 금지] 사용자 입력 통째 인용 금지.
 
@@ -975,6 +980,7 @@ ${kakaoSection}${webBlock}
 
 검색 결과 식당만 사용. assigned_experts: 1·2번은 비용·동선·분위기 등 서로 다른 축, **3번은 카카오맵 후기·별점·리뷰 키워드를 본다는 역할**로 이름·description·bio를 쓸 것. 예산 중심이면 1인당·총액을 원·만원으로.
 debate_logs body: opening·rebuttal·synthesis 각각 **주장·반박·절충**이 드러나야 함. 검색 항목의 주소·카테고리·전화만 줄줄 읽는 출력 금지.
+opening body에 다음을 **쓰지 마세요**(시스템 설명·면책문): "말할게요", "이번 검색 목록에서", "먼저 거론", "비교·검증의 출발점", "카카오에 찍힌".
 각자 질문에 직접 답, rebuttal에서 1번 논점을 공격, 철학·감성 위로 금지. final_summary는 투표+실행 가능한 결론.
 ${ONE_LINE_SUMMARY_UI_RULE}
 debate_logs headline은 위 규칙(패널 40자). MC final_summary headline은 최대 52자.
@@ -1101,7 +1107,8 @@ export async function generateDebateWithOpenAI(
   const withPlaces = withKakaoPlaces(parsed, options?.kakaoPlaces ?? []);
   const k = options?.kakaoPlaces ?? [];
   if (foodPlace && k.length > 0) {
-    return attachKakaoUrlsToFoodConsensus(withPlaces, k);
+    const attached = attachKakaoUrlsToFoodConsensus(withPlaces, k);
+    return stripMatjipMetaLectureOpening(attached, k);
   }
   return withPlaces;
 }

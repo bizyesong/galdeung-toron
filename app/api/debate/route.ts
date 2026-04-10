@@ -14,6 +14,7 @@ import {
   polishFoodDebateCopy,
 } from "@/lib/polishDebateCopy";
 import type { KakaoPlaceCandidate } from "@/lib/debateTypes";
+import { stripMatjipMetaLectureOpening } from "@/lib/stripDebateMarkdown";
 import {
   isDrinkDecisionTopic,
   isElectronicsTopic,
@@ -153,6 +154,9 @@ export async function POST(req: NextRequest) {
           console.error("[debate] copy polish (after OpenAI) failed:", e);
         }
       }
+      if (foodPlace && kakaoPlaces.length > 0) {
+        payload = stripMatjipMetaLectureOpening(payload, kakaoPlaces);
+      }
       return NextResponse.json(payload);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -180,6 +184,10 @@ export async function POST(req: NextRequest) {
     } catch (e) {
       console.error("[debate] copy polish (local fallback) failed:", e);
     }
+  }
+
+  if (foodPlace && kakaoPlaces.length > 0) {
+    localPayload = stripMatjipMetaLectureOpening(localPayload, kakaoPlaces);
   }
 
   return NextResponse.json(localPayload);
