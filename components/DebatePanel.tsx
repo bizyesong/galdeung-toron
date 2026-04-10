@@ -241,7 +241,7 @@ export function DebatePanel() {
           onChange={(e) => setTopic(e.target.value)}
           onKeyDown={handleTopicKeyDown}
           disabled={busy}
-          placeholder='예: "강남에서 부모님이랑 저녁 어디가 좋을까?", "이직할까 말까"'
+          placeholder="강남에서 친구들이랑 저녁 먹을 건데, 분위기 괜찮은 맛집 뭐가 나을까?"
           className="w-full resize-none rounded-xl border border-zinc-700 bg-zinc-950/80 px-3 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-violet-500/25 disabled:opacity-60"
         />
         <p className="text-xs text-zinc-500">
