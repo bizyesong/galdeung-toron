@@ -20,6 +20,10 @@ import {
 } from "@/lib/debateHistory";
 import { isMatjipKakaoTopic } from "@/lib/topicDetect";
 
+/** 비어 있을 때 placeholder와 동일한 기본 고민으로 난장판 열기 */
+const DEFAULT_DEBATE_TOPIC =
+  "강남에서 친구들이랑 저녁 먹을 건데, 분위기 괜찮은 맛집 뭐가 나을까?";
+
 type Flow = "idle" | "loading" | "done";
 
 type RoundEntry = { id: string; payload: DebatePayload };
@@ -65,19 +69,23 @@ export function DebatePanel() {
   }, [rounds]);
 
   const busy = flow === "loading";
-  const canRun = topic.trim().length > 0 && !busy;
+  const canRun = !busy;
   const showFoodLoading = busy && isMatjipKakaoTopic(rootTopic || topic);
   const latestFollowUps =
     rounds[0]?.payload.followUpQuestions?.slice(0, 3) ?? [];
   const isReDebateLoading = busy && rounds.length > 0;
 
   const runDebate = async () => {
-    const trimmed = topic.trim();
-    if (!trimmed || flow === "loading") return;
+    if (flow === "loading") return;
+    const raw = topic.trim();
+    const trimmed = raw.length > 0 ? raw : DEFAULT_DEBATE_TOPIC;
 
     setError(null);
     setRounds([]);
     sessionIdRef.current = null;
+    if (raw.length === 0) {
+      setTopic(trimmed);
+    }
     setFlow("loading");
     setRootTopic(trimmed);
     rootTopicRef.current = trimmed;
@@ -179,7 +187,7 @@ export function DebatePanel() {
     if (e.key !== "Enter" || e.shiftKey) return;
     if (e.nativeEvent.isComposing) return;
     e.preventDefault();
-    if (topic.trim().length > 0 && !busy) {
+    if (!busy) {
       void runDebate();
     }
   };
@@ -241,11 +249,11 @@ export function DebatePanel() {
           onChange={(e) => setTopic(e.target.value)}
           onKeyDown={handleTopicKeyDown}
           disabled={busy}
-          placeholder="강남에서 친구들이랑 저녁 먹을 건데, 분위기 괜찮은 맛집 뭐가 나을까?"
+          placeholder={DEFAULT_DEBATE_TOPIC}
           className="w-full resize-none rounded-xl border border-zinc-700 bg-zinc-950/80 px-3 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-violet-500/25 disabled:opacity-60"
         />
         <p className="text-xs text-zinc-500">
-          Enter로 난장판 열기 · Shift+Enter로 줄바꿈
+          Enter로 난장판 열기 · Shift+Enter로 줄바꿈 · 비우면 아래 예시 질문으로 시작
         </p>
         {error && (
           <p className="text-sm text-red-400" role="alert">
