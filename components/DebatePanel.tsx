@@ -69,7 +69,6 @@ export function DebatePanel() {
   }, [rounds]);
 
   const busy = flow === "loading";
-  const canRun = !busy;
   const showFoodLoading = busy && isMatjipKakaoTopic(rootTopic || topic);
   const latestFollowUps =
     rounds[0]?.payload.followUpQuestions?.slice(0, 3) ?? [];
@@ -238,7 +237,7 @@ export function DebatePanel() {
         </div>
       </header>
 
-      <section className="space-y-3 rounded-2xl border border-cyan-500/15 bg-zinc-900/50 p-4 shadow-[0_0_40px_-12px_rgba(34,211,238,0.15)] backdrop-blur-sm sm:p-5">
+      <section className="relative z-10 space-y-3 rounded-2xl border border-cyan-500/15 bg-zinc-900/50 p-4 shadow-[0_0_40px_-12px_rgba(34,211,238,0.15)] backdrop-blur-sm sm:p-5">
         <label htmlFor="worry" className="text-sm font-medium text-zinc-200">
           오늘 난장판에 올릴 고민
         </label>
@@ -263,9 +262,17 @@ export function DebatePanel() {
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
-            onClick={runDebate}
-            disabled={!canRun}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110 disabled:cursor-not-allowed disabled:!bg-zinc-700 disabled:shadow-none disabled:hover:brightness-100"
+            aria-busy={busy}
+            aria-disabled={busy}
+            onClick={() => {
+              if (busy) return;
+              void runDebate();
+            }}
+            className={`inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-cyan-500/20 transition hover:brightness-110 ${
+              busy
+                ? "pointer-events-none cursor-not-allowed !bg-zinc-700 shadow-none brightness-100"
+                : "cursor-pointer"
+            }`}
           >
             {busy ? (
               <>
