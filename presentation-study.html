@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>난장 NANJANG — 바이브코딩 스터디 발표 (업데이트 · 8슬라이드)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      background: #09090b;
+      color: #fafafa;
+      line-height: 1.5;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .slide {
+      min-height: 100vh;
+      padding: 2.75rem 3rem 3rem;
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid #27272a;
+      page-break-after: always;
+      break-after: page;
+    }
+    .slide:last-child { border-bottom: none; }
+    .slide-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.95fr);
+      gap: 2rem;
+      align-items: start;
+      flex: 1;
+    }
+    @media (max-width: 960px) {
+      .slide-grid { grid-template-columns: 1fr; }
+    }
+    .col-text { min-width: 0; }
+    .col-wire {
+      border: 1px dashed #3f3f46;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      background: linear-gradient(145deg, #18181b 0%, #0c0c0e 100%);
+    }
+    .wire-caption {
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: #71717a;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .wire-svg { width: 100%; height: auto; display: block; }
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #22d3ee;
+      margin-bottom: 0.65rem;
+    }
+    h1 {
+      font-size: 2.15rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #22d3ee, #a78bfa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #f4f4f5;
+      margin-bottom: 0.85rem;
+    }
+    .sub {
+      font-size: 0.98rem;
+      color: #a1a1aa;
+      max-width: 36rem;
+    }
+    ul {
+      margin-top: 0.85rem;
+      padding-left: 1.15rem;
+      color: #d4d4d8;
+      font-size: 0.92rem;
+      max-width: 40rem;
+    }
+    li { margin-bottom: 0.5rem; }
+    li strong { color: #e4e4e7; }
+    .footer-note {
+      margin-top: 1.25rem;
+      font-size: 0.75rem;
+      color: #71717a;
+    }
+    .pill {
+      display: inline-block;
+      padding: 0.18rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.12);
+      color: #67e8f9;
+      font-size: 0.76rem;
+      margin-right: 0.3rem;
+      margin-bottom: 0.3rem;
+    }
+    .history-flow {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.5rem 0.35rem;
+      align-items: center;
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+    }
+    .history-box {
+      border: 1px dashed #52525b;
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+      background: #121214;
+      color: #d4d4d8;
+    }
+    .history-box.bad { border-color: #7f1d1d; color: #fca5a5; }
+    .history-box.good { border-color: #0e7490; color: #a5f3fc; }
+    .history-arrow { color: #a78bfa; font-weight: 700; text-align: center; }
+    .roadmap-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 0.75rem;
+      color: #d4d4d8;
+    }
+    .roadmap-table th,
+    .roadmap-table td {
+      border: 1px solid #3f3f46;
+      padding: 0.55rem 0.65rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    .roadmap-table th {
+      background: #18181b;
+      color: #a1a1aa;
+      font-weight: 600;
+    }
+    .roadmap-table tr:nth-child(even) td { background: rgba(24, 24, 27, 0.5); }
+    .muted { color: #a1a1aa; font-size: 0.88rem; margin-top: 0.65rem; }
+    .callout {
+      margin-top: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      border-left: 3px solid #a78bfa;
+      background: rgba(167, 139, 250, 0.08);
+      font-size: 0.85rem;
+      color: #e4e4e7;
+    }
+    code { color: #a5b4fc; font-size: 0.9em; }
+    @media print {
+      .slide {
+        min-height: auto;
+        padding: 1.75rem 1.5rem;
+        page-break-after: always;
+      }
+      .slide-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slide 1 -->
+  <section class="slide">
+    <div class="slide-grid">
+      <div class="col-text">
+        <span class="badge">바이브코딩 스터디 · 서비스 기획자</span>
+        <h1>난장 (NANJANG)</h1>
+        <p class="sub">
+          AI 세 명이 의견을 나누고, 투표형 결론과 후속 질문까지 주는 <strong>의사결정 놀이터</strong>.
+          Cursor·AI와 함께 코드로 프로토타입을 굴리며, 기획 의도를 직접 검증하는 실험 프로젝트입니다.
+        </p>
+        <div style="margin-top:1rem">
+          <span class="pill">Next.js</span>
+          <span class="pill">OpenAI API</span>
+          <span class="pill">Kakao Local (맛집)</span>
+          <span class="pill">답변 다듬기(옵션)</span>
+          <span class="pill">프로토타입</span>
+        </div>
+        <p class="footer-note">※ 완성 서비스가 아닌 스터디용 빌드 · 발표 후 계속 개선 예정</p>
+      </div>
+      <div class="col-wire">
+        <div class="wire-caption">Prototype wireframe · 한 화면 흐름</div>
+        <svg class="wire-svg" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="8" y="8" width="304" height="264" rx="16" fill="none" stroke="#52525b" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <text x="24" y="36" fill="#71717a" font-size="11" font-family="sans-serif">NANJANG</text>
+          <rect x="24" y="48" width="272" height="44" rx="6" fill="none" stroke="#3f3f46" stroke-dasharray="4 3"/>
+          <text x="32" y="74" fill="#52525b" font-size="10">고민 한 줄 입력…</text>
+          <text x="24" y="108" fill="#71717a" font-size="9">전문가 3 · 토론</text>
+          <rect x="24" y="114" width="82" height="56" rx="4" fill="#18181b" stroke="#22d3ee" stroke-opacity="0.4"/>
+          <rect x="119" y="114" width="82" height="56" rx="4" fill="#18181b" stroke="#a78bfa" stroke-opacity="0.4"/>
+          <rect x="214" y="114" width="82" height="56" rx="4" fill="#18181b" stroke="#f472b6" stroke-opacity="0.35"/>
+          <path d="M160 178 v14" stroke="#52525b" stroke-dasharray="3 2"/>
+          <polygon points="160,198 155,190 165,190" fill="#71717a"/>
+          <rect x="40" y="204" width="240" height="40" rx="6" fill="none" stroke="#22d3ee" stroke-opacity="0.5" stroke-dasharray="4 3"/>
+          <text x="48" y="228" fill="#67e8f9" font-size="10">합의 · 투표 한 줄 결론</text>
+          <rect x="24" y="252" width="88" height="22" rx="4" fill="none" stroke="#3f3f46" stroke-dasharray="3 2"/>
+          <rect x="118" y="252" width="88" height="22" rx="4" fill="none" stroke="#3f3f46" stroke-dasharray="3 2"/>
+          <rect x="212" y="252" width="88" height="22" rx="4" fill="none" stroke="#3f3f46" stroke-dasharray="3 2"/>
+          <text x="28" y="267" fill="#52525b" font-size="8">칩</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 2 -->
+  <section class="slide">
+    <div class="slide-grid">
+      <div class="col-text">
+        <span class="badge">서비스 이해</span>
+        <h2>무엇을 만드는가</h2>
+        <p class="sub">사용자가 한 줄로 고민을 던지면, 성향 다른 전문가 3인이 토론하고 합의·실행 팁·짧은 후속 선택지(2차전)를 줍니다.</p>
+        <ul>
+          <li><strong>입력</strong> — 질문 한 줄 (맥북·와인·맛집 등)</li>
+          <li><strong>출력</strong> — 4턴 토론, 합의, 투표형 결론, 후속 칩 3개, <strong>북마크(저장한 답변)</strong></li>
+          <li><strong>기획 포인트</strong> — 정답 검색이 아니라 <strong>관점 충돌로 결정을 앞당김</strong></li>
+          <li><strong>역할</strong> — 기획자가 룰·톤을 잡고, 바이브코딩으로 구현 속도 확보</li>
+        </ul>
+      </div>
+      <div class="col-wire">
+        <div class="wire-caption">Screen map · 정보 구조 (와이어)</div>
+        <svg class="wire-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="280" height="280" rx="12" fill="none" stroke="#52525b" stroke-dasharray="5 4"/>
+          <rect x="24" y="28" width="252" height="36" rx="4" fill="#18181b" stroke="#3f3f46"/>
+          <text x="32" y="50" fill="#71717a" font-size="10">Header · 세션</text>
+          <rect x="24" y="78" width="252" height="48" rx="4" fill="none" stroke="#22d3ee" stroke-opacity="0.35" stroke-dasharray="4 2"/>
+          <text x="32" y="106" fill="#a1a1aa" font-size="10">질문 입력 영역</text>
+          <text x="24" y="142" fill="#71717a" font-size="9">스크롤 · 토론 타임라인</text>
+          <rect x="24" y="148" width="120" height="64" rx="4" fill="#0c0c0e" stroke="#52525b" stroke-dasharray="3 2"/>
+          <rect x="152" y="148" width="124" height="30" rx="4" fill="#0c0c0e" stroke="#52525b" stroke-dasharray="3 2"/>
+          <rect x="152" y="184" width="124" height="28" rx="4" fill="#0c0c0e" stroke="#52525b" stroke-dasharray="3 2"/>
+          <rect x="24" y="224" width="252" height="48" rx="6" fill="none" stroke="#a78bfa" stroke-opacity="0.45" stroke-dasharray="4 3"/>
+          <text x="32" y="252" fill="#c4b5fd" font-size="10">합의 카드 · 결론 · 액션</text>
+          <rect x="24" y="262" width="76" height="18" rx="3" fill="none" stroke="#3f3f46"/>
+          <rect x="106" y="262" width="76" height="18" rx="3" fill="none" stroke="#3f3f46"/>
+          <rect x="188" y="262" width="76" height="18" rx="3" fill="none" stroke="#3f3f46"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 3 -->
+  <section class="slide">
+    <div class="slide-grid">
+      <div class="col-text">
+        <span class="badge">1차 개편 · 방향 잡기</span>
+        <h2>MVP와 초기 토론 구조</h2>
+        <ul>
+          <li><strong>골격</strong> — <code>/api/debate</code> → OpenAI 또는 로컬 JSON → UI</li>
+          <li><strong>맛집 축</strong> — 카카오 키워드 결과로 <strong>실존 업장만</strong> 토론</li>
+          <li><strong>초기 답변의 한계</strong> — 말이 <strong>박사·논문체</strong>에 가깝고, n=·TCO·효용 곡선 같은 <strong>가짜 통계</strong>가 섞이며 캐릭터가 안 살아 남</li>
+          <li><strong>배운 점</strong> — 기능보다 <strong>시스템 프롬프트·금지어·결맺음 규칙</strong>이 체감 품질을 가른다</li>
+        </ul>
+      </div>
+      <div class="col-wire">
+        <div class="wire-caption">System flow · 와이어</div>
+        <svg class="wire-svg" viewBox="0 0 300 268" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="20" width="100" height="40" rx="6" fill="#18181b" stroke="#22d3ee" stroke-opacity="0.5"/>
+          <text x="38" y="44" fill="#a5f3fc" font-size="11">Client</text>
+          <path d="M128 40 h36" stroke="#52525b"/>
+          <polygon points="168,40 160,36 160,44" fill="#71717a"/>
+          <rect x="172" y="18" width="108" height="44" rx="6" fill="#18181b" stroke="#a78bfa" stroke-opacity="0.5"/>
+          <text x="188" y="44" fill="#ddd6fe" font-size="11">API Route</text>
+          <path d="M226 64 v28" stroke="#52525b"/>
+          <polygon points="226,96 222,88 230,88" fill="#71717a"/>
+          <rect x="172" y="98" width="108" height="40" rx="6" fill="#0c0c0e" stroke="#3f3f46" stroke-dasharray="4 2"/>
+          <text x="182" y="122" fill="#a1a1aa" font-size="10">OpenAI</text>
+          <path d="M172 118 h-56" stroke="#52525b"/>
+          <polygon points="112,118 120,114 120,122" fill="#71717a"/>
+          <rect x="12" y="98" width="100" height="40" rx="6" fill="#0c0c0e" stroke="#3f3f46" stroke-dasharray="4 2"/>
+          <text x="28" y="122" fill="#a1a1aa" font-size="10">Local pack</text>
+          <path d="M226 140 v24" stroke="#52525b"/>
+          <polygon points="226,168 222,160 230,160" fill="#71717a"/>
+          <rect x="160" y="170" width="132" height="36" rx="6" fill="none" stroke="#f472b6" stroke-opacity="0.4" stroke-dasharray="4 2"/>
+          <text x="168" y="192" fill="#f9a8d4" font-size="10">Kakao (맛집만)</text>
+          <path d="M226 208 v20" stroke="#52525b"/>
+          <rect x="100" y="228" width="100" height="36" rx="6" fill="#18181b" stroke="#22d3ee" stroke-opacity="0.35"/>
+          <text x="118" y="250" fill="#e4e4e7" font-size="11">JSON → UI</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 4 -->
+  <section class="slide">
+    <div class="slide-grid">
+      <div class="col-text">
+        <span class="badge">2차 개편 · 톤과 페르소나</span>
+        <h2>토론 엔진 리라이트 + 답변 톤 히스토리</h2>
+        <p class="sub">프롬프트를 여러 번 고쳐 가며, <strong>난장 답변을 논문체에서 구어체·커뮤니티 톤</strong>으로 끌어왔습니다.</p>
+        <div class="history-flow">
+          <div class="history-box bad">
+            <strong>이전</strong><br/>
+            박사·보고서 말투, 가짜 n·표본, TCO·효용 곡선, “연구에 따르면…” 식 허구 근거
+          </div>
+          <div class="history-arrow">→</div>
+          <div class="history-box good">
+            <strong>이후</strong><br/>
+            온라인 커뮤니티에서 보이는 <strong>구어체 논쟁</strong>, 실제 도는 시장 상식만, <strong>투표로 끝내는 결론</strong>
+          </div>
+        </div>
+        <ul style="margin-top:0.85rem">
+          <li><strong>전자기기</strong> — 장비병 / 짠돌이 / 중고고수 고정 역할</li>
+          <li><strong>음주</strong> — 와인·술은 “사라/마라”와 섞이지 않게 전용 분기</li>
+          <li><strong>후속</strong> — 2차전 칩으로 상황만 바꿔 재토론</li>
+        </ul>
+      </div>
+      <div class="col-wire">
+        <div class="wire-caption">Persona blocks · 3인 와이어</div>
+        <svg class="wire-svg" viewBox="0 0 280 260" xmlns="http://www.w3.org/2000/svg">
+          <rect x="12" y="12" width="256" height="56" rx="6" fill="#18181b" stroke="#22d3ee" stroke-opacity="0.45" stroke-dasharray="4 2"/>
+          <text x="22" y="36" fill="#67e8f9" font-size="11">① Opening · 한쪽 쪽으로 밀기</text>
+          <text x="22" y="54" fill="#71717a" font-size="9">…구어체 긴 주장…</text>
+          <rect x="12" y="82" width="256" height="56" rx="6" fill="#18181b" stroke="#fb923c" stroke-opacity="0.45" stroke-dasharray="4 2"/>
+          <text x="22" y="106" fill="#fdba74" font-size="11">② Rebuttal · “아니 형 그건…”</text>
+          <text x="22" y="124" fill="#71717a" font-size="9">…반박…</text>
+          <rect x="12" y="152" width="256" height="56" rx="6" fill="#18181b" stroke="#a78bfa" stroke-opacity="0.45" stroke-dasharray="4 2"/>
+          <text x="22" y="176" fill="#c4b5fd" font-size="11">③ Synthesis · 절충·꿀팁</text>
+          <text x="22" y="194" fill="#71717a" font-size="9">…</text>
+          <rect x="12" y="222" width="256" height="28" rx="6" fill="none" stroke="#f472b6" stroke-opacity="0.5"/>
+          <text x="22" y="240" fill="#fbcfe8" font-size="10">④ MC · 정리: N대M 투표 + 한 줄</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 5 -->
+  <section class="slide">
+    <div class="slide-grid">
+      <div class="col-text">
+        <span class="badge">3차 개편 · 연동과 안정화</span>
+        <h2>카카오 · 분기 · 에러 처리</h2>
+        <ul>
+          <li><strong>맛집만 카카오</strong> — 질문에 <strong>「맛집」</strong> 포함 시에만 호출 → 그 외 고민은 키 없이도 동작</li>
+          <li><strong>콘솔 설정</strong> — 카카오 개발자 앱에서 <strong>Open Map &amp; Local</strong> 켜야 함(꺼져 있으면 HTTP 403)</li>
+          <li><strong>환경 변수</strong> — <code>.env.local</code>, REST 키 정규화(BOM·따옴표)</li>
+          <li><strong>검색</strong> — 대화체 꼬리 제거(예: 어디가 좋을까), 지역 좌표 보강, <strong>0건이면 422</strong> + 시도한 검색어 안내</li>
+          <li><strong>폴백</strong> — OpenAI 실패 시 카테고리별 로컬 팩 · 맛집은 카카오 목록 기반 템플릿</li>
+        </ul>
+      </div>
+      <div class="col-wire">
+        <div class="wire-caption">Topic branch · 의사결정 와이어</div>
+        <svg class="wire-svg" viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+          <rect x="100" y="12" width="80" height="36" rx="6" fill="#18181b" stroke="#52525b"/>
+          <text x="118" y="34" fill="#e4e4e7" font-size="10">질문 입력</text>
+          <path d="M140 50 v16" stroke="#71717a"/>
+          <polygon points="140,70 136,62 144,62" fill="#71717a"/>
+          <rect x="88" y="72" width="104" height="32" rx="6" fill="#27272a" stroke="#eab308"/>
+          <text x="96" y="92" fill="#fde047" font-size="10">'맛집' 포함?</text>
+          <path d="M140 104 v14" stroke="#71717a"/>
+          <path d="M88 88 H40" stroke="#71717a"/>
+          <path d="M192 88 H240" stroke="#71717a"/>
+          <polygon points="40,88 48,84 48,92" fill="#71717a"/>
+          <polygon points="240,88 232,84 232,92" fill="#71717a"/>
+          <rect x="8" y="120" width="72" height="44" rx="6" fill="#0c4a6e" stroke="#22d3ee" stroke-opacity="0.6"/>
+          <text x="16" y="142" fill="#7dd3fc" font-size="9">Y → Kakao</text>
+          <text x="20" y="156" fill="#94a3b8" font-size="8">검색</text>
+          <rect x="200" y="120" width="72" height="44" rx="6" fill="#1e1b4b" stroke="#a78bfa" stroke-opacity="0.55"/>
+          <text x="208" y="142" fill="#c4b5fd" font-size="9">N → 일반</text>
+          <text x="212" y="156" fill="#94a3b8" font-size="8">토론</text>
+          <path d="M44 164 v32" stroke="#52525b" stroke-dasharray="3 2"/>
+          <path d="M236 164 v32" stroke="#52525b" stroke-dasharray="3 2"/>
+          <path d="M44 196 H140" stroke="#52525b" stroke-dasharray="3 2"/>
+          <path d="M236 196 H140" stroke="#52525b" stroke-dasharray="3 2"/>
+          <rect x="88" y="200" width="104" height="32" rx="6" fill="#18181b" stroke="#3f3f46"/>
+          <text x="102" y="220" fill="#a1a1aa" font-size="10">토픽별 프롬프트</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 6 -->
+  <section class="slide">
+    <div class="slide-grid">
+      <div class="col-text">
+        <span class="badge">4차 개편 · UI &amp; 카드</span>
+        <h2>핵심 요약 · 북마크 · 톤</h2>
+        <ul>
+          <li><strong>한 줄 요약</strong> — 카드용 <strong>짧은 결론형</strong>(공백 포함 약 40자, MC는 조금 더 길게), 본문 복붙 지양 · 표시 전용 클램프</li>
+          <li><strong>북마크</strong> — 턴/합의 저장 · 우측 상단 고정이 아니라 <strong>프로필 행과 같은 줄</strong>로 정렬해 시선 흐름 정리</li>
+          <li><strong>맛집 토론</strong> — 검색 목록만 쓰되 <strong>주장·반박</strong>이 드러나게 프롬프트 보강 · 3번 패널은 <strong>카카오맵 후기·리뷰 축</strong>(가짜 별점·인용 금지)</li>
+        </ul>
+      </div>
+      <div class="col-wire">
+        <div class="wire-caption">Card row · 아바타 + 이름 + 북마크</div>
+        <svg class="wire-svg" viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="16" width="264" height="88" rx="10" fill="#18181b" stroke="#3f3f46"/>
+          <rect x="20" y="32" width="44" height="44" rx="10" fill="#0c4a6e" stroke="#22d3ee" stroke-opacity="0.5"/>
+          <text x="76" y="52" fill="#fafafa" font-size="11" font-weight="700">전문가 이름</text>
+          <text x="76" y="68" fill="#71717a" font-size="9">핵심 한 줄(짧게)</text>
+          <path d="M228 42 h28 v24 h-28 z" fill="none" stroke="#eab308" stroke-opacity="0.8"/>
+          <text x="232" y="58" fill="#fde047" font-size="9">북마크</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 7 -->
+  <section class="slide">
+    <div class="slide-grid">
+      <div class="col-text">
+        <span class="badge">5차 개편 · 2차전 &amp; 카피</span>
+        <h2>후속 조건 반영 · 로컬 문장 다듬기</h2>
+        <ul>
+          <li><strong>2차전(후속 칩)</strong> — 「아, 진작 말씀하지!」 접두 + 사용자가 고른 조건(예: 5명 이상 단체)을 <strong>본문 논점에 녹임</strong> · 로컬 폴백 템플릿도 동일</li>
+          <li><strong>얕은 근거 문제</strong> — 주소·카테고리만 읽는 느낌 → 프롬프트로 <strong>비교·트레이드오프·맵 확인</strong> 유도</li>
+          <li><strong>표시 전 OpenAI 다듬기</strong> — <code>polishFoodDebateCopy</code>: 맛집 로컬 폴백 응답을 <strong>gpt-4o-mini</strong>로 구어체 정리(상호·이름 보존 검증) · <code>DEBATE_COPY_POLISH=off</code>로 끔 · OpenAI 1차 결과도 다듬으려면 <code>DEBATE_POLISH_AFTER_OPENAI=1</code></li>
+        </ul>
+        <p class="muted">API 한 번 추가 호출 · 지연·비용 고려해 옵션으로 둠.</p>
+      </div>
+      <div class="col-wire">
+        <div class="wire-caption">API Route · 맛집 응답 경로</div>
+        <svg class="wire-svg" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="20" width="100" height="32" rx="6" fill="#18181b" stroke="#a78bfa" stroke-opacity="0.5"/>
+          <text x="48" y="40" fill="#e4e4e7" font-size="10">/api/debate</text>
+          <path d="M120 36 h32" stroke="#52525b"/>
+          <polygon points="156,36 148,32 148,40" fill="#71717a"/>
+          <rect x="160" y="14" width="100" height="44" rx="6" fill="#0c4a6e" stroke="#22d3ee" stroke-opacity="0.5"/>
+          <text x="168" y="36" fill="#7dd3fc" font-size="9">OpenAI 토론</text>
+          <text x="168" y="50" fill="#94a3b8" font-size="8">(실패 시)</text>
+          <path d="M70 52 v28" stroke="#52525b"/>
+          <rect x="20" y="84" width="100" height="40" rx="6" fill="#27272a" stroke="#3f3f46" stroke-dasharray="4 2"/>
+          <text x="36" y="108" fill="#a1a1aa" font-size="9">Local pack</text>
+          <path d="M120 104 h40" stroke="#52525b"/>
+          <polygon points="164,104 156,100 156,108" fill="#71717a"/>
+          <rect x="168" y="84" width="92" height="40" rx="6" fill="#422006" stroke="#f59e0b" stroke-opacity="0.55"/>
+          <text x="176" y="108" fill="#fcd34d" font-size="9">Polish (옵션)</text>
+          <path d="M214 126 v20" stroke="#52525b"/>
+          <rect x="90" y="150" width="100" height="36" rx="6" fill="#18181b" stroke="#22d3ee" stroke-opacity="0.35"/>
+          <text x="110" y="172" fill="#e4e4e7" font-size="10">JSON → UI</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 8 -->
+  <section class="slide">
+    <span class="badge">로드맵 & 스터디 소감</span>
+    <h2>추후 계획 (표) · 추가 기능은 검토 중</h2>
+    <p class="sub">아래 일정·범위는 방향성이며, <strong>더 넣을 기능·우선순위는 아직 고민 중</strong>입니다.</p>
+    <table class="roadmap-table">
+      <thead>
+        <tr>
+          <th style="width:18%">영역</th>
+          <th style="width:52%">계획</th>
+          <th style="width:30%">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>카카오</td>
+          <td>후기·평점 데이터 연동 검토(지금은 키워드 검색만), 지도·장소 UX</td>
+          <td>API·정책 확인</td>
+        </tr>
+        <tr>
+          <td>답변 품질</td>
+          <td>프롬프트 + 로컬 템플릿 + <strong>옵션 카피 폴리시</strong> · 모델 업그레이드는 그 다음</td>
+          <td>반복 실험</td>
+        </tr>
+        <tr>
+          <td>온보딩</td>
+          <td>첫 사용자용 짧은 안내·예시 질문</td>
+          <td>기획 초안 단계</td>
+        </tr>
+        <tr>
+          <td><strong>추가 기능</strong></td>
+          <td>히스토리 공유, 알림, 주제 템플릿 등 <strong>아이디어 다수</strong></td>
+          <td><strong>스펙·우선순위 논의 중</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <strong>기획자로서</strong> — 답변 톤을 논문체에서 구어체로 바꿀 때, “한 줄 프롬프트”가 아니라 <strong>금지어·역할·결맺음</strong>을 묶어서 고쳐야 체감이 바뀐다는 걸 이번에 몸으로 배움.
+      <br/><br/>
+      <strong>바이브코딩</strong> — 가설 → 구현 → 피드백 루프를 짧게 돌리며, 스펙만으로는 안 보이던 분기(맛집/일반/술), 카카오 권한·빈 검색, UI 정렬, 2차전 조건 누락까지 직접 다뤄 봄.
+    </div>
+    <p class="footer-note">
+      PDF: 저장 시점 기준으로 레포의 <code>presentation-study.html</code>를 인쇄하거나, 빌드 스크립트로 생성 가능.
+    </p>
+  </section>
+
+</body>
+</html>
