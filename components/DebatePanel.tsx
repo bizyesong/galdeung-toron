@@ -20,9 +20,9 @@ import {
 } from "@/lib/debateHistory";
 import { isMatjipKakaoTopic } from "@/lib/topicDetect";
 
-/** 비어 있을 때 placeholder와 동일한 기본 고민으로 난장판 열기 (여행·예산 예시) */
+/** 비어 있을 때 placeholder와 동일한 기본 고민으로 난장판 열기 (일반 의사결정 예시) */
 const DEFAULT_DEBATE_TOPIC =
-  "제주도 여행 2박 3일인데 100만 원이면 충분할까?";
+  "지금 회사 다닌 지 3년 됐는데, 이직할까 말까 계속 미루는 중이야. 어떻게 보여?";
 
 type Flow = "idle" | "loading" | "done";
 
