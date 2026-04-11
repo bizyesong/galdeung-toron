@@ -39,15 +39,26 @@ function normalizePlaceUrl(url: string, placeId: string): string {
   return "";
 }
 
+/** 지역명 뒤 '에서'·'에' — 키워드 검색에선 짧은 지명만 남기는 편이 유리 */
+function compactRegionPrefix(q: string): string {
+  return q
+    .replace(
+      /^(강남|역삼|논현|신논현|압구정|청담|신사|홍대|합정|성수|이태원|건대|신촌|종로|명동|잠실|여의도|판교|해운대|서면|제주)(?:에서|에|으로|로)(?=\s)/u,
+      "$1 ",
+    )
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 /** 사용자 질문을 카카오 키워드 검색어로 정리 */
 export function buildKakaoKeywordQuery(topic: string): string {
   let q = topic
     .trim()
     .replace(/[?!？!]/g, " ")
     .replace(/\s+/g, " ")
-    /* 카카오 키워드 검색은 짧은 명사구에 가깝게 나와야 함 — 대화체가 섞이면 0건이 잦음 */
+    /* 카카오 키워드 검색은 짧은 명사구에 가깝게 — 대화체·접속이 길면 0건이 매우 잦음 */
     .replace(
-      /\s*(어디가\s*좋을까|어디\s*갈까|어디가\s*나을까|뭐가\s*좋을까|어디\s*잘\s*갈까|어디\s*좋을까|어디\s*괜찮을까|어떤\s*데가\s*좋을까|어디\s*가볼까)\s*/gi,
+      /\s*(어디가\s*좋을까|어디\s*갈까|어디가\s*나을까|뭐가\s*좋을까|뭐가\s*나을까|뭘로\s*할까|뭘까|어디\s*잘\s*갈까|어디\s*좋을까|어디\s*괜찮을까|어떤\s*데가\s*좋을까|어디\s*가볼까)\s*/gi,
       " ",
     )
     .replace(
@@ -56,8 +67,33 @@ export function buildKakaoKeywordQuery(topic: string): string {
     )
     .replace(/\s+추천\s*$/gi, "")
     .replace(/\s+(좀|plz)\s*$/gi, "")
+    /* 자연어 뼈대만 남기기 */
+    .replace(/\s*친구(들)?이랑\s*/gi, " ")
+    .replace(/\s*친구랑\s*/gi, " ")
+    .replace(/\s*저녁\s*먹을\s*건데\s*,?\s*/gi, " ")
+    .replace(/\s*점심\s*먹을\s*건데\s*,?\s*/gi, " ")
+    .replace(/\s*밥\s*먹을\s*건데\s*,?\s*/gi, " ")
+    .replace(/\s*분위기\s*괜찮은\s*/gi, " ")
+    .replace(/\s*가성비\s*좋은\s*/gi, " ")
     .replace(/\s+/g, " ")
     .trim();
+
+  q = compactRegionPrefix(q);
+
+  /* 여전히 문장형이 길면: '지역 + (한식|…) + 맛집' 또는 '지역 맛집'으로 압축 */
+  const regionMatch = q.match(
+    /(강남|역삼|논현|신논현|압구정|청담|신사|홍대|합정|망원|성수|이태원|건대|신촌|종로|명동|잠실|여의도|판교|해운대|서면|제주)/,
+  );
+  const cuisineMatch = q.match(/(한식|중식|일식|양식|고기|회|술집|카페|브런치)/);
+  if (q.length > 28 && regionMatch) {
+    const r = regionMatch[1]!;
+    if (/(맛집|식당|밥집)/.test(q)) {
+      q = cuisineMatch ? `${r} ${cuisineMatch[1]} 맛집` : `${r} 맛집`;
+    }
+  }
+
+  q = q.replace(/\s+/g, " ").trim();
+
   if (!q) return topic.trim().slice(0, 100);
   if (
     !/(맛집|식당|밥|먹|카페|술|고깃|브런치|디저트|레스토랑|술집|밥집|뷔페|한식|중식|일식|양식)/i.test(

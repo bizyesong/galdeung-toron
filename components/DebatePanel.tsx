@@ -20,9 +20,9 @@ import {
 } from "@/lib/debateHistory";
 import { isMatjipKakaoTopic } from "@/lib/topicDetect";
 
-/** 비어 있을 때 placeholder와 동일한 기본 고민으로 난장판 열기 */
+/** 비어 있을 때 placeholder와 동일한 기본 고민으로 난장판 열기 (일반 의사결정 예시) */
 const DEFAULT_DEBATE_TOPIC =
-  "강남에서 친구들이랑 저녁 먹을 건데, 분위기 괜찮은 맛집 뭐가 나을까?";
+  "지금 회사 다닌 지 3년 됐는데, 이직할까 말까 계속 미루는 중이야. 어떻게 보여?";
 
 type Flow = "idle" | "loading" | "done";
 
