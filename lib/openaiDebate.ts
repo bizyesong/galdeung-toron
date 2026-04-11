@@ -24,6 +24,7 @@ import {
 } from "./stripDebateMarkdown";
 import { normalizeExpertColor } from "./expertTheme";
 import { LUCIDE_ICON_PROMPT_BLOCK } from "./lucidePromptCatalog";
+import { isTravelBudgetTopic } from "./topicDetect";
 import {
   clampOpinionSummaryForDisplay,
   MC_SUMMARY_DISPLAY_MAX,
@@ -684,11 +685,15 @@ function buildSecondRoundUserPrefix(
   priorSummary: string,
 ): string {
   const sum = priorSummary.trim().slice(0, 1500);
+  const travel2 =
+    isTravelBudgetTopic(originalTopic) &&
+    `여행·예산 모드: assigned_experts 1=가성비·항목별(원·만원), 2=경험·지금 쓰기(설법·불교·스님 말투 금지), 3=뉴스·커뮤·물가 체감·검증 루틴(가짜 %·가짜 기사 제목 금지).\n`;
+
   return `[2차 토론 모드 — 반드시 반영]
 처음 질문: ${originalTopic}
 사용자가 방금 버튼으로 고른 추가 정보: 「${followUpChoice}」
 이전 토론 요약(참고·그대로 복붙하지 말고 반영해 주장을 수정할 것): ${sum || "(요약 없음)"}
-
+${travel2 || ""}
 지시: 새 조건 때문에 이전 결론이 바뀌면 과감히 수정한다. opening은 짧게 리액션해도 되되 곧바로 질문에 대한 입장으로 들어간다.
 전문가 대사에 사용자 문장 통째 인용 금지. 추가 조건은 짧게 재표현만(예: 5명 이상 단체 기준).
 가짜 통계·논문 말투 금지. 철학·감성 위로 금지.
@@ -696,7 +701,7 @@ function buildSecondRoundUserPrefix(
 맛집 모드 2차: debate_logs 첫 칸(opening) body는 **반드시** 사용자가 고른 추가 정보를 논점으로 삼고, 주소·카테고리만 읽는 소개 금지. 그 조건에 맞을 때 왜 검색 목록의 자기 편 가게가 유리한지(좌석·웨이팅·메뉴 분산·동선 등) **추론·트레이드오프**로 말할 것. 확인이 필요하면 "카카오맵 후기에서 ○○ 키워드를 보라"고 쓸 것(가짜 별점·가짜 후기 인용 금지).
 최종은 실행 가능한 한 줄 결론·투표(주제에 맞는 동사)로 끝낸다.
 follow_up_questions 3개 새로 제시.
-일반·전자·음주 모드는 루트 summary·debate 스키마로 다시 출력하고, final_answer·options·key_factors·risks·action_guide·experts·debate 3건을 반드시 갱신한다. 맛집 모드는 기존처럼 debate_logs·consensus를 쓴다.
+일반·전자·음주·여행·예산 모드는 루트 summary·debate 스키마로 다시 출력하고, final_answer·options·key_factors·risks·action_guide·experts·debate 3건을 반드시 갱신한다. 맛집 모드는 기존처럼 debate_logs·consensus를 쓴다.
 
 `;
 }
@@ -812,6 +817,25 @@ ${LUCIDE_ICON_PROMPT_BLOCK}
 
 반드시 JSON만.`;
 
+const SYSTEM_TRAVEL = `당신은 한국어로 여행(국내·해외)·숙박 일정에서 **예산·경비가 충분한지** 같은 질문을 세 관점에서 판단하게 돕는 토론 작가다.
+
+${BANNED_JARGON}
+${PRAGMATIC_EXPERT_FRAMEWORK}
+
+[관점 고정 — 이름만 바꿔도 됨, 순서 엄수]
+1번: **가성비·항목별 절약** — 왕복 교통·숙소·식비·현지 이동(버스 vs 렌터카+유류)·비상금으로 쪼개기. 사용자가 금액을 적었으면 그 전제로 **원·만원** 시나리오. 숙소만 보고 식비를 빼먹는 실수를 짚을 것.
+2번: **경험·지금 쓰기** — 핵심 체험(한 끼·한 밤·한 코스)에 돈·시간을 쓰는 쪽 주장. **불교·스님·설법·격언·인생은 길다** 류 말투·철학 멘트 금지. 친구 말투로 구체 조건만.
+3번: **뉴스·커뮤니티·물가 리터러시** — 기사·커뮤에 도는 **체감**을 언급하되 가짜 기사 제목·가짜 통계·가짜 % 금지. "출발 며칠 전 검색으로 교차 확인" 같은 실행 루틴. 성수기·지역은 상식 범위만.
+
+[이 모드 예외]
+PRAGMATIC의 "인생론·철학 금지"는 2번에게 **설교형 철학**만 해당한다. 2번은 여전히 실행 판단(무엇에 얼마 쓸지)으로 말한다.
+
+${LUCIDE_ICON_PROMPT_BLOCK}
+
+출력 JSON 구조는 SYSTEM_GENERAL과 동일(summary+debate, debate_logs·루트 consensus 없음). 투표 결론 포함(가기/조건부 가기/코스 줄이기 등). 별표 ** 금지.
+
+반드시 JSON만.`;
+
 const PRAGMATIC_FOOD_FRAMEWORK = `
 [전문가·답변 — 맛집 모드]
 assigned_experts 3명은 질문에 맞게 정하되, 축은 반드시 아래처럼 **겹치지 않게** 쓴다.
@@ -898,6 +922,43 @@ function userPayloadSchemaElectronics(topic: string): string {
 
 assigned_experts: 1 경험·성능, 2 비용·현금흐름(예산 질문 시 원·만원·개월 숫자 필수), 3 리스크·중고·거래.
 debate는 질문에 직접 답. 상식 비용대만, 가짜 통계 금지. final_answer에 투표·결론 한 줄 녹이기(최대 52자·복붙 금지).
+${ONE_LINE_SUMMARY_UI_RULE}
+summary.experts[].one_line은 위 규칙대로.
+follow_up_questions 3개.
+
+JSON 한 개만 (general과 동일 키, debate_logs·루트 consensus 없음):
+
+{
+  "topic": string,
+  "follow_up_questions": [ string, string, string ],
+  "assigned_experts": [ { "id": 1, "name", "description", "iconName", "color", "bio"? }, ×3 ],
+  "summary": {
+    "final_answer": string,
+    "options": [ string, string, string ],
+    "key_factors": [ string, string, string ],
+    "experts": [
+      { "name": string, "one_line": string },
+      { "name": string, "one_line": string },
+      { "name": string, "one_line": string }
+    ],
+    "risks": [ string, string, string ],
+    "action_guide": [ string, string, string ]
+  },
+  "debate": [
+    { "expert": string, "opinion": string, "rebuttal": string },
+    { "expert": string, "opinion": string, "rebuttal": string },
+    { "expert": string, "opinion": string, "rebuttal": string }
+  ]
+}`;
+}
+
+function userPayloadSchemaTravel(topic: string): string {
+  return `아래는 사용자 맥락(본문 통째 인용 금지).
+
+주제: ${topic}
+
+assigned_experts: 1 가성비·항목별 예산(원·만원·1인당·1일당), 2 경험·지금 쓰기·핵심 체험 우선(설법·불교·스님 말투 금지), 3 뉴스·커뮤니티·물가 체감·검증 방법(가짜 통계·가짜 기사 제목 금지).
+debate는 질문에 직접 답. final_answer에 투표·결론 한 줄 녹이기(최대 52자·복붙 금지).
 ${ONE_LINE_SUMMARY_UI_RULE}
 summary.experts[].one_line은 위 규칙대로.
 follow_up_questions 3개.
@@ -1020,6 +1081,7 @@ export async function generateDebateWithOpenAI(
     foodPlace?: boolean;
     electronicsTopic?: boolean;
     drinkTopic?: boolean;
+    travelBudgetTopic?: boolean;
     kakaoPlaces?: KakaoPlaceCandidate[];
     followUpChoice?: string;
     priorSummary?: string;
@@ -1028,6 +1090,7 @@ export async function generateDebateWithOpenAI(
   const foodPlace = Boolean(options?.foodPlace);
   const electronicsTopic = Boolean(options?.electronicsTopic);
   const drinkTopic = Boolean(options?.drinkTopic);
+  const travelBudgetTopic = Boolean(options?.travelBudgetTopic);
   const kakaoBlock = foodPlace
     ? formatKakaoPlacesForPrompt(options?.kakaoPlaces ?? [])
     : "";
@@ -1040,14 +1103,18 @@ export async function generateDebateWithOpenAI(
       ? SYSTEM_ELECTRONICS
       : drinkTopic
         ? SYSTEM_DRINK
-        : SYSTEM_GENERAL;
+        : travelBudgetTopic
+          ? SYSTEM_TRAVEL
+          : SYSTEM_GENERAL;
   const userBase = foodPlace
     ? userPayloadSchemaFood(topic, kakaoBlock)
     : electronicsTopic
       ? userPayloadSchemaElectronics(topic)
       : drinkTopic
         ? userPayloadSchemaDrink(topic)
-        : userPayloadSchemaGeneral(topic);
+        : travelBudgetTopic
+          ? userPayloadSchemaTravel(topic)
+          : userPayloadSchemaGeneral(topic);
   const user = secondRound
     ? `${buildSecondRoundUserPrefix(topic, followTrim, options?.priorSummary ?? "")}${userBase}`
     : userBase;
@@ -1068,9 +1135,11 @@ export async function generateDebateWithOpenAI(
           ? 0.65
           : electronicsTopic
             ? 0.9
-            : drinkTopic
-              ? 0.88
-              : 0.85,
+            : travelBudgetTopic
+              ? 0.9
+              : drinkTopic
+                ? 0.88
+                : 0.85,
       response_format: { type: "json_object" },
       messages: [
         { role: "system", content: system },

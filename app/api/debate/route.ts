@@ -19,6 +19,7 @@ import {
   isDrinkDecisionTopic,
   isElectronicsTopic,
   isMatjipKakaoTopic,
+  isTravelBudgetTopic,
 } from "@/lib/topicDetect";
 
 export const maxDuration = 90;
@@ -56,6 +57,11 @@ export async function POST(req: NextRequest) {
   const electronicsTopic = isElectronicsTopic(topic);
   const drinkTopic =
     !foodPlace && !electronicsTopic && isDrinkDecisionTopic(topic);
+  const travelBudgetTopic =
+    !foodPlace &&
+    !electronicsTopic &&
+    !drinkTopic &&
+    isTravelBudgetTopic(topic);
   const kakaoKey = normalizeKakaoRestApiKey(
     process.env.KAKAO_CLIENT_ID ?? process.env.KAKAO_REST_API_KEY,
   );
@@ -134,6 +140,7 @@ export async function POST(req: NextRequest) {
     foodPlace,
     electronicsTopic,
     drinkTopic,
+    travelBudgetTopic,
     kakaoPlaces,
     ...(followUpChoice ? { followUpChoice, priorSummary } : {}),
   };

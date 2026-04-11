@@ -21,3 +21,17 @@ export function isElectronicsTopic(raw: string): boolean {
     s,
   );
 }
+
+/** 여행·숙박 맥락 + 예산·경비 질문 — 패널을 가성비 / 경험·지금 / 뉴스·물가 축으로 고정 */
+export function isTravelBudgetTopic(raw: string): boolean {
+  const s = raw.toLowerCase();
+  const travel =
+    /제주|국내\s*여행|해외|여행|여행지|항공|숙소|호텔|풀빌라|2박\s*3일|몇\s*박|관광|렌터카|렌트카|비행기|기차\s*표|패키지|휴가/.test(
+      s,
+    );
+  const money =
+    /예산|경비|얼마|만\s*원|만원|\d+\s*만|충분|부족|빡빡|알차|가성비|비용|총액|돈|들\s*까|괜찮|넉넉|아깝|싸게|비싸/.test(
+      s,
+    );
+  return travel && money;
+}
